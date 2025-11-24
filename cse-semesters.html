@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSE – Semesters | Vidyālaya</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+
+    body {
+      background: linear-gradient(to bottom right, #004aad, #00b7ff);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .container { display: flex; width: 100%; }
+
+    .sidebar {
+      width: 260px; background:#0f172a; color:white;
+      padding:24px 18px; display:flex; flex-direction:column; align-items:center;
+      box-shadow:4px 0 18px rgba(0,0,0,0.35);
+    }
+
+    .profile-img {
+      width:100px; height:100px; border-radius:50%; border:3px solid #00d9ff; margin-bottom:10px;
+    }
+
+    .menu-btn {
+      width:100%; padding:10px 12px; margin:4px 0;
+      border-radius:8px; border:none; background:#1f2937; color:white;
+      text-align:left; font-size:0.95rem; cursor:pointer; transition:0.25s;
+    }
+
+    .menu-btn:hover { background:#38bdf8; color:#0f172a; transform:translateX(2px); }
+    .menu-btn.active { background:#38bdf8; color:#0f172a; font-weight:600; }
+
+    .logout-btn {
+      width:100%; margin-top:auto; padding:10px; border-radius:8px; border:none;
+      background:#ef4444; color:white; font-weight:600; cursor:pointer; transition:0.25s;
+    }
+
+    .main-content { flex:1; padding:30px 40px; color:white; overflow-y:auto; }
+    .hero { background:rgba(255,255,255,0.15); border-radius:14px; padding:18px 20px; margin-bottom:24px; }
+    .hero h1 { font-size:1.8rem; margin-bottom:6px; }
+
+    .semester-grid {
+      display:grid; grid-template-columns:repeat(4,minmax(120px,1fr));
+      gap:12px; margin-bottom:24px;
+    }
+
+    .sem-card {
+      padding:10px 8px; border-radius:10px; font-weight:600;
+      background:white; color:#0f172a; cursor:pointer; transition:0.25s; text-align:center;
+    }
+
+    .sem-card:hover, .sem-card.active { background:#38bdf8; color:white; transform:translateY(-3px) scale(1.03); }
+
+    .subjects-wrapper {
+      background:rgba(15,23,42,0.65); padding:18px; border-radius:14px;
+      box-shadow:0 8px 22px rgba(0,0,0,0.35);
+    }
+
+    .subjects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+
+    .subject-card {
+      background:white; color:#0f172a; border-radius:12px;
+      padding:12px; box-shadow:0 6px 18px rgba(0,0,0,0.25); transition:0.25s;
+    }
+
+    .subject-actions { display:flex; gap:6px; margin-top:6px; }
+    .subject-btn {
+      flex:1; padding:6px; border-radius:8px; font-size:0.8rem; text-decoration:none;
+      background:#3b82f6; color:white; font-weight:600; text-align:center;
+    }
+
+    .subject-btn:nth-child(2) { background:#f59e0b; }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <aside class="sidebar">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+    <h2 id="profileName">Loading...</h2>
+    <p id="profileCourse">Loading...</p>
+    <p id="profileEmail">Loading...</p>
+
+    <nav class="sidebar-menu">
+      <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+      <button class="menu-btn active" onclick="location.href='notes.html'">📘 Notes</button>
+      <button class="menu-btn" onclick="location.href='courses.html'">📚 Courses</button>
+      <button class="menu-btn" onclick="location.href='placement.html'">🎯 Placement</button>
+      <button class="menu-btn" onclick="location.href='videos.html'">🎥 Video Resources</button>
+      <button class="menu-btn" onclick="location.href='profile.html'">⚙ Profile Settings</button>
+    </nav>
+
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <div class="hero">
+      <h1>CSE – Semesters & Subjects</h1>
+      <p>Select a semester to view subjects and access Notes & Syllabus resources.</p>
+    </div>
+
+    <div class="semester-grid" id="semesterGrid">
+      <button class="sem-card active" data-sem="1">Semester 1</button>
+      <button class="sem-card" data-sem="2">Semester 2</button>
+      <button class="sem-card" data-sem="3">Semester 3</button>
+      <button class="sem-card" data-sem="4">Semester 4</button>
+      <button class="sem-card" data-sem="5">Semester 5</button>
+      <button class="sem-card" data-sem="6">Semester 6</button>
+      <button class="sem-card" data-sem="7">Semester 7</button>
+      <button class="sem-card" data-sem="8">Semester 8</button>
+    </div>
+
+    <div class="subjects-wrapper">
+      <div id="subjectsTitle">Semester 1 – Subjects</div>
+      <div id="subjectsGrid" class="subjects-grid"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // CSE SUBJECT DATA (Sem 1 to 8) — WITH NOTES LINKS PLACEHOLDER
+  const cseSubjects = {
+    1: [
+      { name: "Engineering Mathematics-I", link: "https://www.studymedia.in/fe/engineering-mathematics-1/" },
+      { name: "Engineering Physics / Chemistry", link: "https://www.studymedia.in/fe/engineering-chemistry/" },
+      { name: "Programming for Problem Solving (C / Python)", link: "https://share.google/P7Cis2DK6DvvWz8Sb" },
+      { name: "Basic Electrical & Electronics Engineering", link: "https://www.studymedia.in/fe/basic-electrical-engineering-notes/" },
+      { name: "Engineering Graphics / Workshop Practice", link: "https://www.studymedia.in/fe/engineering-graphics-2024-pattern/" },
+      { name: "Communication Skills / Environmental Science", link: "https://share.google/vK09IklEgieNs2WhC" }
+    ],
+    2: [
+      { name: "Engineering Mathematics-II", link: "https://www.studymedia.in/fe/engineering-mathematics-2/" },
+      { name: "Data Structures", link: "https://share.google/D8rdVqNe4N4ugedwd" },
+      { name: "Digital Logic Design", link: "https://share.google/LKRcaDQZAOJ773YaH" },
+      { name: "Computer Organization & Architecture", link: "https://share.google/JxoQtdZOswWxjownb" },
+      { name: "Applied Physics / Chemistry", link: "https://www.studymedia.in/fe/engineering-physics-notes/" },
+      { name: "English for Engineers / Environmental Science", link: "https://share.google/p0Ai8LusCKbq0kwtZ" }
+    ],
+    3: [
+      { name: "Discrete Mathematics", link: "https://share.google/83dfmc6868HE3EUjV" },
+      { name: "Object-Oriented Programming (Java / Python)", link: "https://share.google/Kq1aGHOn0zDJ8VCAn" },
+      { name: "Database Management Systems (DBMS)", link: "https://share.google/RvEcfbwIqDpHelZCU" },
+      { name: "Design & Analysis of Algorithms", link: "https://share.google/qJ9E4Jfn2zqrogUCQ" },
+      { name: "Computer Architecture", link: "https://share.google/S2HJ5GsaWFGctTF5Q" },
+      { name: "Software Engineering", link: "https://share.google/E8RHwQfx4a43G7Np6" }
+    ],
+    4: [
+      { name: "Operating Systems", link: "https://share.google/MUyYC3BO49uuuVxCH" },
+      { name: "Theory of Computation / Automata Theory", link: "https://share.google/JSvMy5Li91dkDhHNU" },
+      { name: "Computer Networks-I", link: "https://share.google/NPXnZKHxIDiVOpAWn" },
+      { name: "Microprocessors & Interface Techniques", link: "https://share.google/7E4Sx8luezFU7FZfS" },
+      { name: "Web Technologies / Data Communication", link: "https://share.google/tDKptf5fZ9NUyZDUL" },
+      { name: "Humanities / Elective", link: "https://share.google/XtTB5lQotFISOadke" }
+    ],
+    5: [
+      { name: "Advanced Algorithms", link: "https://share.google/hTy1aA1K98MY1TAJV" },
+      { name: "Computer Networks-II", link: "https://share.google/NPXnZKHxIDiVOpAWn" },
+      { name: "Compiler Design", link: "https://share.google/thRVeRKqiBssYHD1s" },
+      { name: "Artificial Intelligence / Machine Learning", link: "https://share.google/RXPCIqaK500BN7eGQ" },
+      { name: "Advanced DBMS / Data Mining", link: "https://share.google/zOquU1aH3wHuma5Th" },
+      { name: "Professional Elective / Aptitude & Soft Skills", link: "https://share.google/akCM8cN6q5VA6bZIm" }
+    ],
+    6: [
+      { name: "Cloud Computing / Distributed Systems", link: "https://share.google/dVe95vY4amoapiOWX" },
+      { name: "Cryptography & Network Security", link: "https://share.google/gxW40kst5JjwaqDLV" },
+      { name: "Mobile Computing / IoT", link: "https://share.google/tBRhBusXzoiZrIwMv" },
+      { name: "Computer Graphics & Visualization", link: "https://share.google/vDSnzUX4ekBjvvr6z" },
+      { name: "Open / Professional Elective", link: "https://share.google/VaAmuAmP9b8Ow7EGT" },
+      { name: "Mini Project / Seminar", link: "https://share.google/3ALr9OwCda7wfJf9J" }
+    ],
+    7: [
+      { name: "Big Data Analytics", link: "https://share.google/WqahtrNJ3Ce1FOjvj" },
+      { name: "Parallel & High-Performance Computing", link: "https://share.google/p82mftpUwo8zAsNb2" },
+      { name: "Full-Stack Development / Web Tech-II", link: "https://share.google/KtDnhR3uXfkx6XhAB" },
+      { name: "Professional Elective-II", link: "https://share.google/1iLDJGctLbRnjwVSW" },
+      { name: "Major Project Phase-I", link: "https://share.google/cgEiY0xOHaR6UJtbz" },
+      { name: "Internship / Seminar", link: "https://share.google/AhkNYcFtzKPaX0FIE" }
+    ],
+    8: [
+      { name: "Soft Computing / Robotics / Advanced Elective", link: "https://share.google/jQWDrcq4hrobjpGE5" },
+      { name: "Professional Elective-III", link: "https://share.google/Bl1c1PccuELXGiPii" },
+      { name: "Major Project Phase-II", link: "https://share.google/nnrCgadnKEsVlAKOr" },
+      { name: "Viva-Voce / Training / Dissertation", link: "" }
+    ]
+  };
+
+  function renderSubjects(sem) {
+    const title = document.getElementById("subjectsTitle");
+    const grid = document.getElementById("subjectsGrid");
+    title.innerText = `Semester ${sem} – Subjects`;
+    const list = cseSubjects[sem] || [];
+    grid.innerHTML = "";
+
+    list.forEach(sub => {
+      grid.innerHTML += `
+        <div class="subject-card">
+          <h3>${sub.name}</h3>
+          <div class="subject-actions">
+            <a class="subject-btn" href="${sub.link}" target="_blank">📘 Notes</a>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  document.querySelectorAll(".sem-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelector(".sem-card.active").classList.remove("active");
+      btn.classList.add("active");
+      renderSubjects(btn.dataset.sem);
+    });
+  });
+
+  renderSubjects(1);
+</script>
+
+
+
+</body>
+</html>

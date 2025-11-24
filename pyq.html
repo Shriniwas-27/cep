@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYQ – Vidyālaya</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif;}
+body{background:linear-gradient(to bottom right,#004aad,#00b7ff);min-height:100vh;display:flex;}
+.container{display:flex;width:100%;}
+
+/* SIDEBAR */
+.sidebar{width:260px;background:#0f172a;color:white;padding:24px 18px;display:flex;flex-direction:column;align-items:center;}
+.profile-img{width:100px;height:100px;border-radius:50%;border:3px solid #00d9ff;margin-bottom:10px;}
+.menu-btn{width:100%;padding:10px;margin:4px 0;border-radius:8px;background:#1f2937;color:white;border:none;cursor:pointer;}
+.menu-btn:hover,.menu-btn.active{background:#38bdf8;color:#0f172a;}
+.logout-btn{margin-top:auto;width:100%;padding:10px;background:#ef4444;color:white;border:none;border-radius:8px;}
+
+.main-content{flex:1;padding:35px;color:white;overflow-y:auto;}
+.title{font-size:2rem;margin-bottom:10px;text-shadow:0 0 10px rgba(0,0,0,0.3);}
+
+/* CARDS SECTION */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+  margin-top:25px;
+}
+
+.card{
+  background:rgba(255,255,255,0.9);
+  padding:24px;
+  border-radius:18px;
+  text-align:center;
+  font-weight:700;
+  font-size:1.1rem;
+  color:#0f172a;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 10px 22px rgba(0,0,0,0.25);
+}
+
+.card:hover{
+  transform:translateY(-6px) scale(1.03);
+  background:#0f172a;
+  color:white;
+}
+
+.card img{
+  width:70px;
+  margin-bottom:10px;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+    <h2 id="profileName">Loading...</h2>
+    <p id="profileCourse">Loading...</p>
+    <p id="profileEmail">Loading...</p>
+
+    <nav class="sidebar-menu">
+      <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+      <button class="menu-btn" onclick="location.href='notes.html'">📘 Notes</button>
+      <button class="menu-btn" onclick="location.href='courses.html'">📚 Courses</button>
+      <button class="menu-btn active" onclick="location.href='pyq.html'">📄 PYQ</button>
+      <button class="menu-btn" onclick="location.href='placement.html'">🎯 Placement</button>
+      <button class="menu-btn" onclick="location.href='videos.html'">🎥 Videos</button>
+      <button class="menu-btn" onclick="location.href='profile.html'">⚙ Profile</button>
+    </nav>
+
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <h1 class="title">📄 Previous Year Question Papers</h1>
+    <p>Select your branch to access the latest PYQ collection</p>
+
+    <div class="grid">
+
+      <a class="card" href="https://www.sppuonline.com/btech-cs-question-papers.html#semester" target="_blank">
+        💻 CSE – PYQ
+      </a>
+
+      <a class="card" href="https://lastmomenttuitions.com/sppu/question-papers/extc-second-year/" target="_blank">
+        📡 ENTC – PYQ
+      </a>
+
+      <a class="card" href="https://www.sppuonline.com/btech-me-question-papers.html#semester" target="_blank">
+        ⚙ Mechanical – PYQ
+      </a>
+
+      <a class="card" href="https://www.sppuonline.com/btech-ce-question-papers.html#semester" target="_blank">
+        🏗 Civil – PYQ
+      </a>
+
+    </div>
+  </main>
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+const supabase = createClient("https://byrqewqijxzbksbeavzl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFld3Fpanh6YmtzYmVhdnpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk3OTAsImV4cCI6MjA3ODc4NTc5MH0.tIso8wmZWF1MyZm17imeHrGZXv0smuNaGWYkWycKdsw");
+
+async function loadUserProfile() {
+  const { data:{ user }} = await supabase.auth.getUser();
+  if(!user) return location.href="auth.html";
+
+  const { data:profile } = await supabase.from("profiles").select("*").eq("id",user.id).single();
+  document.getElementById("profileName").innerText = profile.name;
+  document.getElementById("profileEmail").innerText = user.email;
+  document.getElementById("profileCourse").innerText = `${profile.course} | ${profile.branch}`;
+}
+loadUserProfile();
+
+document.getElementById("logoutBtn").onclick = async()=>{ await supabase.auth.signOut(); location.href="auth.html"; };
+</script>
+</body>
+</html>

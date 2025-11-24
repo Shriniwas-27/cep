@@ -1,0 +1,191 @@
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins, sans-serif;}
+
+body{
+  background:linear-gradient(to bottom right,#004aad,#00b7ff);
+  overflow:hidden;
+}
+
+.container{
+  display:flex;
+  width:100%;
+  height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:280px;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  padding:25px;
+  align-items:center;
+}
+
+.profile-img{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  border:3px solid #00d9ff;
+  margin-bottom:12px;
+}
+
+.sidebar-menu{
+  width:100%;
+  margin-top:20px;
+}
+
+.menu-btn{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border:none;
+  border-radius:8px;
+  background:#1e293b;
+  color:white;
+  font-size:1rem;
+  cursor:pointer;
+}
+
+.menu-btn:hover{
+  background:#38bdf8;
+  color:#0f172a;
+}
+
+.logout-btn{
+  width:100%;
+  margin-top:auto;
+  padding:12px;
+  background:#ef4444;
+  border:none;
+  border-radius:8px;
+}
+
+/* MAIN CONTENT */
+.main-content{
+  flex:1;
+  padding:40px;
+  overflow-y:auto;
+  color:white;
+}
+
+.cards-grid{
+  margin-top:35px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.card{
+  padding:18px;
+  background:white;
+  border:none;
+  border-radius:12px;
+  color:#0f172a;
+  font-weight:600;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.card:hover{
+  background:#00d0ff;
+  color:white;
+  transform:scale(1.05);
+}
+
+/* Mobile */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main-content{margin:0;padding:20px;}
+  .cards-grid{grid-template-columns:repeat(2,1fr);}
+}
+.welcome-card {
+  background: rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 25px;
+}
+
+.welcome-card h1 {
+  font-size: 28px;
+}
+
+.welcome-card p {
+  font-size: 18px;
+  opacity: .9;
+  margin-top: 8px;
+}
+
+.companies-section, .exams-section {
+  margin-top: 30px;
+}
+
+.company-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.company-card {
+  background: white;
+  padding: 12px;
+  border-radius: 10px;
+  color: #0f172a;
+  text-align: center;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.company-card:hover {
+  background: #00d4ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.exam-list li {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.branch-tabs {display:flex;justify-content:center;gap:12px;margin:15px 0;}
+.branch-btn {background:#1e293b;padding:10px 20px;border:none;border-radius:8px;color:white;font-weight:600;cursor:pointer;transition:.3s;}
+.branch-btn.active {background:#38bdf8;transform:scale(1.07);}
+.company-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px;}
+.company-card {background:white;color:#022b60;padding:18px;border-radius:12px;text-align:center;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.16);cursor:pointer;transition:.3s;}
+.company-card:hover {transform:scale(1.06);background:#38bdf8;color:white;}
+.company-card img {width:52px;margin-bottom:10px;}
+.news-section {
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.news-section h2 {
+  color: white;
+  margin-bottom: 12px;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  gap: 14px;
+}
+
+.news-card {
+  background: rgba(255,255,255,0.9);
+  padding: 14px;
+  border-radius: 12px;
+  color: #0f172a;
+  font-weight: 600;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  text-decoration: none;
+  transition: .25s;
+  text-align: center;
+}
+
+.news-card:hover {
+  background:#0f172a;
+  color:white;
+  transform: translateY(-4px) scale(1.02);
+}

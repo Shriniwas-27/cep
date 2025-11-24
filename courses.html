@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses – Vidyālaya</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+
+    body {
+      background: linear-gradient(to bottom right, #004aad, #00b7ff);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: #0f172a;
+      color: white;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 4px 0 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .profile-section { text-align: center; margin-bottom: 18px; }
+    .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #00d9ff; margin-bottom: 10px; }
+    .sidebar-menu { width: 100%; margin-top: 18px; }
+
+    .menu-btn {
+      width: 100%; padding: 10px 12px; margin: 4px 0;
+      border-radius: 8px; border: none; background: #1f2937; color: white;
+      text-align: left; font-size: 0.95rem; cursor: pointer; transition: 0.25s;
+    }
+    .menu-btn:hover { background: #38bdf8; color: #0f172a; transform: translateX(2px); }
+    .menu-btn.active { background: #38bdf8; color: #0f172a; font-weight: 600; }
+
+    .logout-btn {
+      width: 100%; margin-top: auto; padding: 10px;
+      border-radius: 8px; border: none; background: #ef4444; color: white;
+      font-weight: 600; cursor: pointer; transition: 0.25s;
+    }
+    .logout-btn:hover { background: #dc2626; transform: scale(1.03); }
+
+    /* MAIN CONTENT */
+    .main-content { flex: 1; padding: 30px 40px; color: white; overflow-y: auto; }
+    h1 { font-size: 1.8rem; margin-bottom: 8px; }
+    p { opacity: 0.95; }
+
+    /* BRANCH TABS */
+    .branch-tabs {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      margin-bottom: 20px;
+    }
+    .branch-btn {
+      padding: 8px 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: none;
+      background: white;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .branch-btn.active,
+    .branch-btn:hover {
+      background: #38bdf8;
+      color: #0f172a;
+      transform: translateY(-2px);
+    }
+
+    /* CARDS */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .course-card {
+      background: rgba(255, 255, 255, 0.92);
+      color: #0f172a;
+      padding: 18px;
+      border-radius: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+      transition: 0.25s ease;
+      text-align: center;
+    }
+
+    .course-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      background: #0f172a;
+      color: white;
+    }
+
+    .course-card h3 { font-size: 1.1rem; margin-bottom: 6px; }
+    .course-card .type { font-size: 0.85rem; opacity: 0.9; }
+    .start-btn {
+      width: 100%;
+      background: #38bdf8;
+      border: none;
+      padding: 8px;
+      color: #0f172a;
+      margin-top: 8px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .start-btn:hover { background: white; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="profile-section">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+        <h2 id="profileName">Loading...</h2>
+        <p id="profileCourse">Loading...</p>
+        <p id="profileEmail">Loading...</p>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+        <button class="menu-btn" onclick="location.href='notes.html'">📘 Notes</button>
+        <button class="menu-btn active" onclick="location.href='courses.html'">📚 Courses</button>
+        <button class="menu-btn" onclick="location.href='placement.html'">🎯 Placement</button>
+        <button class="menu-btn" onclick="location.href='pyq.html'">📄 PYQ</button>
+        <button class="menu-btn" onclick="location.href='videos.html'">🎥 Video Resources</button>
+        <button class="menu-btn" onclick="location.href='profile.html'">⚙ Profile Settings</button>
+      </nav>
+
+      <button id="logoutBtn" class="logout-btn">Logout</button>
+    </aside>
+
+    <main class="main-content">
+      <h1>🎓 Skill Development & Online Courses</h1>
+      <p>Choose your branch to explore the best Free & Paid learning courses.</p>
+
+      <div class="branch-tabs">
+        <button class="branch-btn active" data-branch="cse">CSE</button>
+        <button class="branch-btn" data-branch="entc">ENTC</button>
+        <button class="branch-btn" data-branch="mech">Mechanical</button>
+        <button class="branch-btn" data-branch="civil">Civil</button>
+      </div>
+
+      <div id="courseGrid" class="course-grid"></div>
+    </main>
+  </div>
+
+<script>
+const coursesData = {
+  cse: [
+    { title: "Full-Stack Web Development (Meta)", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/professional-certificates/meta-front-end-developer" },
+    { title: "DSA + System Design", platform: "Scaler", type: "Paid", link: "https://www.scaler.com/courses/software-engineering/" },
+    { title: "Google IT Automation with Python", platform: "Coursera", type: "Free + Paid Cert", link: "https://www.coursera.org/professional-certificates/google-it-automation" },
+    { title: "Machine Learning Specialization", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+    { title: "Cybersecurity Certification", platform: "edX", type: "Paid", link: "https://www.edx.org/learn/cybersecurity" },
+    { title: "Data Science Professional Certificate", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/professional-certificates/ibm-data-science" },
+    { title: "Cloud AWS / Azure Fundamentals", platform: "Coursera", type: "Free + Cert", link: "https://www.coursera.org/collections/aws-certification" },
+    { title: "Blockchain for Developers", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/specializations/blockchain" },
+    { title: "DevOps Engineering", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/" },
+    { title: "Mobile App Development (Flutter)", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/projects/flutter-dart" }
+  ],
+
+  entc: [
+    { title: "Embedded Systems", platform: "NPTEL", type: "Free + Cert", link: "https://onlinecourses.nptel.ac.in/noc25_ee53" },
+    { title: "VLSI Design", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/vlsi-academy/" },
+    { title: "Digital Signal Processing", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/dsp" },
+    { title: "IoT Specialization", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/specializations/iot" },
+    { title: "Wireless Communication", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/wireless-communication" },
+    { title: "PCB Design", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/altium-designerpcb-design-and-schematic/" },
+    { title: "FPGA & Verilog HDL", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/fpga-design" },
+    { title: "5G Technology", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/projects/introduction-5g" },
+    { title: "Telecom Network Fundamentals", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/telecom-network-fundamentals/" },
+    { title: "Embedded Linux Device Drivers", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/linux-device-driver/" }
+  ],
+
+  mech: [
+    { title: "Automobile Engineering", platform: "NPTEL", type: "Free + Cert", link: "https://onlinecourses.nptel.ac.in/noc24_me35" },
+    { title: "CAD / CAM / CAE", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/specializations/cad" },
+    { title: "Thermodynamics", platform: "edX", type: "Paid", link: "https://www.edx.org/learn/thermodynamics" },
+    { title: "Industrial Automation", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/industrial-automation/" },
+    { title: "Robotics", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/specializations/robotics" },
+    { title: "Manufacturing Processes", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/manufacturing-processes/" },
+    { title: "HVAC Systems", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/hvac-fundamentals/" },
+    { title: "Finite Element Analysis (ANSYS)", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/finite-element-method" },
+    { title: "Mechatronics", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/mechatronics" },
+    { title: "Materials Engineering", platform: "edX", type: "Paid", link: "https://www.edx.org/learn/materials-science" }
+  ],
+
+  civil: [
+    { title: "Construction Project Management", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/construction-project-management" },
+    { title: "AutoCAD Masterclass", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/autocad-course/" },
+    { title: "Design of RCC Structures", platform: "NPTEL", type: "Free + Cert", link: "https://onlinecourses.nptel.ac.in/noc24_ce46" },
+    { title: "Surveying & Geomatics", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/geomatics" },
+    { title: "Bridge Engineering", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/bridge-design/" },
+    { title: "Transportation Engineering", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/transportation-engineering" },
+    { title: "Structural Analysis", platform: "edX", type: "Paid", link: "https://www.edx.org/learn/civil-engineering" },
+    { title: "Geotechnical Engineering", platform: "Coursera", type: "Paid", link: "https://www.coursera.org/learn/geotechnical-engineering" },
+    { title: "Water Resources Engineering", platform: "edX", type: "Paid", link: "https://www.edx.org/course/water-engineering" },
+    { title: "Construction Safety", platform: "Udemy", type: "Paid", link: "https://www.udemy.com/course/construction-safety-management/" }
+  ]
+};
+
+function renderCourses(branch) {
+  const grid = document.getElementById("courseGrid");
+  grid.innerHTML = "";
+  coursesData[branch].forEach(course => {
+    grid.innerHTML += `
+      <div class="course-card">
+        <h3>${course.title}</h3>
+        <p class="type">${course.type} — ${course.platform}</p>
+        <a href="${course.link}" target="_blank" class="start-btn">Start Now</a>
+      </div>`;
+  });
+}
+
+document.querySelectorAll(".branch-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelector(".branch-btn.active").classList.remove("active");
+    btn.classList.add("active");
+    renderCourses(btn.dataset.branch);
+  });
+});
+
+renderCourses("cse");
+
+</script>
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+const supabase = createClient("https://byrqewqijxzbksbeavzl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFld3Fpanh6YmtzYmVhdnpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk3OTAsImV4cCI6MjA3ODc4NTc5MH0.tIso8wmZWF1MyZm17imeHrGZXv0smuNaGWYkWycKdsw");
+
+async function loadUserProfile() {
+  const { data:{ user }} = await supabase.auth.getUser();
+  if(!user) return location.href="auth.html";
+
+  const { data:profile } = await supabase.from("profiles").select("*").eq("id",user.id).single();
+  document.getElementById("profileName").innerText = profile.name;
+  document.getElementById("profileEmail").innerText = user.email;
+  document.getElementById("profileCourse").innerText = `${profile.course} | ${profile.branch}`;
+}
+loadUserProfile();
+
+document.getElementById("logoutBtn").onclick = async()=>{ await supabase.auth.signOut(); location.href="auth.html"; };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile Settings – Vidyālaya</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
+
+body{
+  background:linear-gradient(to bottom right,#004aad,#00b7ff);
+  min-height:100vh;display:flex;color:white;
+}
+
+.container{display:flex;width:100%}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;background:#0f172a;color:white;padding:24px 18px;
+  display:flex;flex-direction:column;align-items:center;
+  box-shadow:4px 0 18px rgba(0,0,0,.35)
+}
+
+.profile-section{text-align:center;margin-bottom:18px}
+.profile-img{width:100px;height:100px;border-radius:50%;border:3px solid #00d9ff;margin-bottom:10px}
+
+.menu-btn{
+  width:100%;padding:10px 12px;margin:4px 0;border-radius:8px;border:none;
+  background:#1f2937;color:white;text-align:left;font-size:.95rem;
+  cursor:pointer;transition:.25s
+}
+.menu-btn:hover{background:#38bdf8;color:#0f172a;transform:translateX(2px)}
+.menu-btn.active{background:#38bdf8;color:#0f172a;font-weight:600}
+
+.logout-btn{
+  width:100%;margin-top:auto;padding:10px;border-radius:8px;border:none;
+  background:#ef4444;color:white;font-weight:600;cursor:pointer;transition:.25s
+}
+.logout-btn:hover{background:#dc2626;transform:scale(1.03)}
+
+.main-content{flex:1;padding:40px 50px}
+h1{font-size:1.9rem;margin-bottom:12px}
+
+/******** FORM ********/
+.form-box{
+  background:rgba(255,255,255,.23);
+  padding:22px;border-radius:16px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+label{font-size:.95rem;font-weight:600;margin-bottom:3px;display:block}
+input{
+  width:100%;padding:10px;border-radius:10px;border:none;
+  margin-bottom:12px;font-size:.9rem;background:white;color:#0f172a
+}
+
+.save-btn{
+  width:100%;padding:10px;border:none;border-radius:12px;
+  background:#38bdf8;font-size:1rem;font-weight:600;
+  cursor:pointer;color:#0f172a;margin-top:8px
+}
+.save-btn:hover{background:white}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="profile-section">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+    <h2 id="profileName">Loading..</h2>
+    <p id="profileCourse">Loading..</p>
+    <p id="profileEmail">Loading..</p>
+  </div>
+
+  <nav class="sidebar-menu">
+    <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+    <button class="menu-btn" onclick="location.href='notes.html'">📘 Notes</button>
+    <button class="menu-btn" onclick="location.href='courses.html'">📚 Courses</button>
+    <button class="menu-btn" onclick="location.href='placement.html'">🎯 Placement</button>
+    <button class="menu-btn" onclick="location.href='pyq.html'">📄 PYQ</button>
+    <button class="menu-btn" onclick="location.href='videos.html'">🎥 Video Resources</button>
+    <button class="menu-btn active">⚙ Profile Settings</button>
+  </nav>
+
+  <button id="logoutBtn" class="logout-btn">Logout</button>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+<h1>⚙ Profile Settings</h1>
+
+<div class="form-box">
+  <label>Name</label><input id="name">
+  <label>Phone</label><input id="phone">
+  <label>Division</label><input id="division">
+  <label>Branch</label><input id="branch">
+  <label>Course</label><input id="course">
+  <label>Age</label><input id="age">
+
+  <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+</div>
+
+</main>
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient(
+  "https://byrqewqijxzbksbeavzl.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFld3Fpanh6YmtzYmVhdnpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk3OTAsImV4cCI6MjA3ODc4NTc5MH0.tIso8wmZWF1MyZm17imeHrGZXv0smuNaGWYkWycKdsw"
+);
+
+// ================= LOAD USER PROFILE ================
+async function loadProfile() {
+  const { data:{ user }} = await supabase.auth.getUser();
+  if (!user) return location.href = "auth.html";
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (profile) {
+    document.getElementById("profileName").innerText = profile.name;
+    document.getElementById("profileEmail").innerText = user.email;
+    document.getElementById("profileCourse").innerText =
+      `${profile.course} | ${profile.branch}`;
+
+    // fill inputs
+    document.getElementById("name").value = profile.name || "";
+    document.getElementById("phone").value = profile.phone || "";
+    document.getElementById("division").value = profile.division || "";
+    document.getElementById("branch").value = profile.branch || "";
+    document.getElementById("course").value = profile.course || "";
+    document.getElementById("age").value = profile.age || "";
+  }
+}
+loadProfile();
+
+// ================= SAVE PROFILE BUTTON ================
+window.saveProfile = async function () {
+  const { data:{ user }} = await supabase.auth.getUser();
+
+  const updates = {
+    id: user.id,
+    name: name.value,
+    phone: phone.value,
+    division: division.value,
+    branch: branch.value,
+    course: course.value,
+    age: age.value,
+    updated_at: new Date()
+  };
+
+  const { error } = await supabase.from("profiles").upsert(updates);
+  if (!error) alert("Profile Updated Successfully ✔");
+};
+
+// ================= LOGOUT ================
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  location.href = "auth.html";
+});
+</script>
+
+
+</body>
+</html>

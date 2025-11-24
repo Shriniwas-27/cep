@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENTC – Semesters | Vidyālaya</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+
+    body {
+      background: linear-gradient(to bottom right, #004aad, #00b7ff);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: #0f172a;
+      color: white;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 4px 0 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .profile-section { text-align: center; margin-bottom: 18px; }
+
+    .profile-img {
+      width: 100px; height: 100px; border-radius: 50%;
+      border: 3px solid #00d9ff; margin-bottom: 10px;
+    }
+
+    .sidebar-menu { width: 100%; margin-top: 18px; }
+    .menu-btn {
+      width: 100%; padding: 10px 12px; margin: 4px 0; border-radius: 8px;
+      border: none; background: #1f2937; color: white; text-align: left;
+      font-size: 0.95rem; cursor: pointer; transition: 0.25s;
+    }
+    .menu-btn:hover { background: #38bdf8; color: #0f172a; transform: translateX(2px); }
+
+    .menu-btn.active { background: #38bdf8; color: #0f172a; font-weight: 600; }
+
+    .logout-btn {
+      width: 100%; margin-top: auto; padding: 10px; border-radius: 8px;
+      border: none; background: #ef4444; color: white; font-weight: 600;
+      cursor: pointer; transition: 0.25s;
+    }
+    .logout-btn:hover { background: #dc2626; transform: scale(1.03); }
+
+    .main-content {
+      flex: 1; padding: 30px 40px; color: white; overflow-y: auto;
+    }
+
+    .hero {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 14px; padding: 18px 20px; backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); margin-bottom: 24px;
+    }
+
+    .semester-grid {
+      display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr));
+      gap: 12px; margin-bottom: 24px;
+    }
+
+    .sem-card {
+      padding: 10px 8px; border-radius: 10px; border: none; font-weight: 600;
+      text-align: center; background: rgba(255, 255, 255, 0.9); color: #0f172a;
+      cursor: pointer; transition: 0.25s; font-size: 0.95rem;
+    }
+
+    .sem-card:hover, .sem-card.active { background: #38bdf8; color: white; transform: translateY(-3px); }
+
+    .subjects-wrapper {
+      margin-top: 10px; background: rgba(15, 23, 42, 0.65);
+      padding: 18px; border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+
+    .subjects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .subject-card {
+      background: rgba(255, 255, 255, 0.96);
+      color: #0f172a; border-radius: 12px;
+      padding: 12px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      transition: 0.25s;
+    }
+    .subject-card:hover { transform: translateY(-3px); }
+
+    .subject-actions {
+      display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;
+    }
+
+    .subject-btn {
+      flex: 1; padding: 6px; border-radius: 8px; color: white;
+      border: none; cursor: pointer; text-align: center; text-decoration: none;
+      font-size: 0.8rem; background: #3b82f6;
+    }
+    .subject-btn:nth-child(2) { background: #10b981; }
+    .subject-btn:nth-child(3) { background: #f59e0b; }
+    .subject-btn:nth-child(4) { background: #6366f1; }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <aside class="sidebar">
+    <div class="profile-section">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img" />
+      <h2 id="profileName">Loading...</h2>
+      <p id="profileCourse">Loading...</p>
+      <p id="profileEmail">Loading...</p>
+    </div>
+
+    <nav class="sidebar-menu">
+      <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+      <button class="menu-btn active" onclick="location.href='notes.html'">📘 Notes</button>
+      <button class="menu-btn" onclick="location.href='courses.html'">📚 Courses</button>
+      <button class="menu-btn" onclick="location.href='placement.html'">🎯 Placement</button>
+      <button class="menu-btn" onclick="location.href='pyq.html'">📄 PYQ</button>
+      <button class="menu-btn" onclick="location.href='videos.html'">🎥 Videos</button>
+      <button class="menu-btn" onclick="location.href='profile.html'">⚙ Profile</button>
+    </nav>
+
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <div class="hero">
+      <h1>ENTC – Semesters & Subjects</h1>
+      <p>Select semester to view subjects and access Notes, PYQs, MCQs & Syllabus.</p>
+    </div>
+
+    <div class="semester-grid" id="semGrid">
+      <button class="sem-card active" data-sem="1">Semester 1</button>
+      <button class="sem-card" data-sem="2">Semester 2</button>
+      <button class="sem-card" data-sem="3">Semester 3</button>
+      <button class="sem-card" data-sem="4">Semester 4</button>
+      <button class="sem-card" data-sem="5">Semester 5</button>
+      <button class="sem-card" data-sem="6">Semester 6</button>
+      <button class="sem-card" data-sem="7">Semester 7</button>
+      <button class="sem-card" data-sem="8">Semester 8</button>
+    </div>
+
+    <div class="subjects-wrapper">
+      <h3 id="subjectsTitle">Semester 1 – Subjects</h3>
+      <div class="subjects-grid" id="subjectsGrid"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const entcSubjects = {
+  1: [
+    { name: "Engineering Mathematics-I", link: "https://www.studymedia.in/fe/engineering-mathematics-1/" },
+    { name: "Engineering Physics / Chemistry", link: "https://www.studymedia.in/fe/engineering-chemistry/" },
+    { name: "Basic Electrical Engineering", link: "https://www.studymedia.in/fe/basic-electrical-engineering-notes/" },
+    { name: "Engineering Graphics", link: "https://www.studymedia.in/fe/engineering-graphics-2024-pattern/" },
+    { name: "Programming for Problem Solving (C / Python)", link: "https://share.google/Kq1aGHOn0zDJ8VCAn" },
+    { name: "Communication Skills / EVS", link: "https://share.google/vK09IklEgieNs2WhC" }
+  ],
+  2: [
+    { name: "Engineering Mathematics-II", link: "https://www.studymedia.in/fe/engineering-mathematics-2/" },
+    { name: "Basic Electronics Engineering", link: "https://www.studymedia.in/fe/basic-electronics-engineering/" },
+    { name: "Engineering Mechanics", link: "https://www.studymedia.in/fe/engineering-mechanics-2024-pattern/" },
+    { name: "Data Structures & Algorithms", link: "https://share.google/HKF538oAKJAHRK9pA" },
+    { name: "Applied Physics / Chemistry-II", link: "https://www.studymedia.in/fe/engineering-physics-notes/" },
+    { name: "English for Engineers / EVS", link: "https://share.google/p0Ai8LusCKbq0kwtZ" }
+  ],
+  3: [
+    { name: "Electronic Devices & Circuits", link: "https://share.google/JAuhOMPGsG1I8YCPh" },
+    { name: "Network Analysis & Synthesis", link: "https://share.google/KxSjirA50toNFRJ8N" },
+    { name: "Digital Logic Design", link: "https://share.google/VgJI3fUMnefNd2Ej7" },
+    { name: "Signals & Systems", link: "https://mrcet.com/downloads/digital_notes/ECE/II%20Year/04012023/R%2020%20SIGNALS%20AND%20SYSTEMS.pdf" },
+    { name: "Object-Oriented Programming (C++ / Java)", link: "https://mrcet.com/downloads/digital_notes/HS/OOP_10122018.pdf" },
+    { name: "Control Systems", link: "https://mrcet.com/downloads/digital_notes/ECE/II%20Year/Control%20Systems.pdf" }
+  ],
+  4: [
+    { name: "Analog Circuits / Analog Communication", link: "https://share.google/MWkfWOExJRKjO0zIZ" },
+    { name: "Microprocessors & Microcontrollers", link: "https://share.google/2kL6GLPPBqP5V7Ki7" },
+    { name: "Electromagnetic Field Theory", link: "https://share.google/Z4VvMb39YsibPtTd3" },
+    { name: "Linear Integrated Circuits", link: "https://mrcet.com/downloads/digital_notes/ECE/III%20Year/05082022/Linear%20Digital%20Integrated%20Circuits.pdf" },
+    { name: "Probability & Random Processes", link: "http://people.eecs.berkeley.edu/~spohland/files/notes/Probability%20&%20Random%20Processes.pdf" },
+    { name: "Humanities / Elective-I", link: "https://www.scribd.com/document/324871460/Humanities-Notes-Module-1-pdf" }
+  ],
+  5: [
+    { name: "Digital Communication", link: "https://share.google/yGQeqOqvmOPMokaiN" },
+    { name: "Digital Signal Processing (DSP)", link: "https://mrcet.com/downloads/digital_notes/ECE/III%20Year/DIGITAL%20SIGNAL%20PROCESSING_30112018.pdf" },
+    { name: "Microcontroller Interfacing & Embedded Systems", link: "https://share.google/myp4oJVyE5QQE8OCY" },
+    { name: "VLSI Design", link: "https://share.google/EXU8c1shUQassjfmb" },
+    { name: "Computer Networks", link: "https://share.google/KnE1tc1PxgDogOWd3" },
+    { name: "Professional Elective-I", link: "https://share.google/ziYvGyS9WcFO28mZc" }
+  ],
+  6: [
+    { name: "Wireless Communication", link: "https://share.google/C6suH3fyep3Dktk7E" },
+    { name: "Industrial Automation & PLC / Robotics", link: "https://share.google/96gSPYmMAz0oh5qc4" },
+    { name: "Information Theory & Coding", link: "https://share.google/7xbRBLSmV0yzwcHcw" },
+    { name: "Antenna & Wave Propagation", link: "https://share.google/NczBQNEMfhW4Magcy" },
+    { name: "Open Elective / Professional Elective-II", link: "https://share.google/dn9QCnajNRIstTRGa" },
+    { name: "Mini Project / Seminar", link: "https://share.google/SYeGbDnyyfJ8nRrLr" }
+  ],
+  7: [
+    { name: "Mobile Communication / RF Engineering", link: "https://share.google/7be6nY5qe0ErMGnCW" },
+    { name: "Optical Fiber Communication", link: "https://share.google/PbpuhoEgkvDpxi6Ex" },
+    { name: "Internet of Things (IoT)", link: "https://share.google/JpEngHqlKKzR0bruY" },
+    { name: "Satellite Communication / Radar Engineering", link: "https://share.google/GSuKPSDMNuymCGlop" },
+    { name: "Major Project Phase-I", link: "https://nevonprojects.com/engineering-projects-2/electronics-and-communication-projects/" },
+    { name: "Internship / Seminar", link: "https://share.google/hyDbRmJ7tdiT8xnzg" }
+  ],
+  8: [
+    { name: "AI / Machine Learning for E&TC / Adv. Comm. Systems", link: "https://share.google/oqrm5jepKnPJBnMzo" },
+    { name: "Professional Elective-III", link: "https://share.google/JLodjPUGxjuO2GNpO" },
+    { name: "Major Project Phase-II", link: "https://share.google/wUdcPB03rjtV880OS" },
+    { name: "Viva-Voce / Internship / Dissertation", link: "https://in.indeed.com/q-internship-electronics-l-pune,-maharashtra-jobs.html" }
+  ],
+};
+
+function loadSubjects(sem) {
+  document.getElementById("subjectsTitle").innerText = `Semester ${sem} – Subjects`;
+  const grid = document.getElementById("subjectsGrid");
+  grid.innerHTML = "";
+
+  entcSubjects[sem].forEach(sub => {
+    grid.innerHTML += `
+      <div class="subject-card">
+        <h3>${sub.name}</h3>
+        <div class="subject-actions">
+          <a class="subject-btn" href="${sub.link}" target="_blank">📘 Notes</a>
+        </div>
+      </div>`;
+  });
+}
+
+loadSubjects(1);
+
+document.querySelectorAll(".sem-card").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".sem-card").forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
+    loadSubjects(btn.dataset.sem);
+  });
+});
+</script>
+
+
+</body>
+</html>

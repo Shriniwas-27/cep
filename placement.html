@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placement – Vidyalaya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+
+    body {
+      display: flex;
+      background: linear-gradient(to bottom right, #004aad, #00b7ff);
+      min-height: 100vh;
+      color: white;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: #07182E;
+      padding: 25px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar h2 { font-size: 1.1rem; margin-top: 8px; }
+    .sidebar p { font-size: 0.75rem; opacity: 0.8; text-align: center; }
+
+    .profile-img {
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      border: 3px solid #00b7ff;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .menu-btn {
+      padding: 12px;
+      background: #0c213a;
+      color: white;
+      border: none;
+      width: 100%;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .menu-btn:hover, .menu-btn.active {
+      background: #00b7ff;
+      color: #07182E;
+    }
+
+    #logoutBtn {
+      margin-top: auto;
+      background: #ff4d4d;
+      border-radius: 10px;
+    }
+
+    /* MAIN */
+    .main {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    h2 { text-align: center; opacity: .95; margin-bottom: 20px; }
+
+    .branch-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .branch-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      border: none;
+      background: rgba(255,255,255,0.28);
+      color: white;
+    }
+
+    .branch-btn.active { background: white; color: #004aad; }
+
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .company-card {
+      background: white;
+      color: #0F172A;
+      padding: 18px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transition: 0.25s;
+    }
+
+    .company-card:hover { transform: scale(1.03); }
+
+    .company-card img {
+      width: 55px;
+      margin-bottom: 8px;
+    }
+
+    .apply-btn {
+      padding: 8px 14px;
+      background: #006aff;
+      color: white;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    /* RESOURCE CARDS */
+    .tools-title {
+      margin-top: 45px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 20px;
+      margin-top: 18px;
+    }
+
+    .tool-card {
+      background: white;
+      padding: 18px;
+      border-radius: 16px;
+      color: #0F172A;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.22);
+    }
+
+    .tool-btn {
+      margin-top: 12px;
+      padding: 8px 15px;
+      background: #006aff;
+      color: white;
+      border-radius: 10px;
+      display: inline-block;
+      font-size: 0.85rem;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+
+  <h2 id="profileName">Loading...</h2>
+  <p id="profileCourse">Loading...</p>
+  <p id="profileEmail">Loading...</p>
+
+  <nav class="sidebar-menu">
+    <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+    <button class="menu-btn" onclick="location.href='notes.html'">📘 Notes</button>
+    <button class="menu-btn" onclick="location.href='courses.html'">📚 Courses</button>
+    <button class="menu-btn active">🎯 Placement</button>
+    <button class="menu-btn" onclick="location.href='pyq.html'">📄 PYQ</button>
+    <button class="menu-btn" onclick="location.href='videos.html'">🎥 Video Resources</button>
+    <button class="menu-btn" onclick="location.href='profile.html'">⚙ Profile Settings</button>
+    <button id="logoutBtn" class="menu-btn" style="background:#e63946;">Logout</button>
+  </nav>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <h1>🚀 Placement Opportunities & Top Hiring Companies</h1>
+  <h2>Select your branch to explore high-package job openings</h2>
+
+  <div class="branch-tabs">
+    <button class="branch-btn active" data-branch="cse">CSE</button>
+    <button class="branch-btn" data-branch="entc">ENTC</button>
+    <button class="branch-btn" data-branch="mech">Mechanical</button>
+    <button class="branch-btn" data-branch="civil">Civil</button>
+  </div>
+
+  <div id="companyGrid" class="company-grid"></div>
+
+  <h2 class="tools-title">📦 Placement Tools & Skill Resources</h2>
+  <div class="tools-grid">
+    <div class="tool-card">
+      <h3>📄 Resume Templates</h3>
+      <p>ATS Friendly Templates</p>
+      <strong style="color:green;">Free Downloads</strong>
+      <a href="https://www.canva.com/resumes/templates/" target="_blank" class="tool-btn">Explore</a>
+    </div>
+
+    <div class="tool-card">
+      <h3>🧠 Aptitude Practice</h3>
+      <p>Quant • Reasoning • Verbal</p>
+      <strong style="color:green;">Free Test + Solutions</strong>
+      <a href="https://aptitude-test.com/" target="_blank" class="tool-btn">Start Now</a>
+    </div>
+
+    <div class="tool-card">
+      <h3>🎤 Interview Questions</h3>
+      <p>HR • Technical • DSA</p>
+      <strong style="color:green;">Top Interview Prep</strong>
+      <a href="https://www.themuse.com/advice/interview-questions-and-answers" target="_blank" class="tool-btn">Practice</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- Your JS Loads Companies -->
+<script>
+const companies = {
+  cse: [
+    {name:"Google", role:"Software Engineer", salary:"52 LPA", logo:"https://logo.clearbit.com/google.com", link:"https://careers.google.com"},
+    {name:"Microsoft", role:"SDE", salary:"45 LPA", logo:"https://logo.clearbit.com/microsoft.com", link:"https://careers.microsoft.com"},
+    {name:"Amazon", role:"SDE-1", salary:"36 LPA", logo:"https://logo.clearbit.com/amazon.com", link:"https://amazon.jobs"},
+    {name:"Netflix", role:"Full-Stack Dev", salary:"60 LPA", logo:"https://logo.clearbit.com/netflix.com", link:"https://jobs.netflix.com"},
+    {name:"Meta", role:"Software Engineer", salary:"55 LPA", logo:"https://logo.clearbit.com/meta.com", link:"https://www.metacareers.com"},
+    {name:"TCS", role:"Software Engineer", salary:"12 LPA", logo:"https://logo.clearbit.com/tcs.com", link:"https://www.tcs.com/careers"},
+    {name:"Infosys", role:"Systems Engineer", salary:"10 LPA", logo:"https://logo.clearbit.com/infosys.com", link:"https://career.infosys.com"},
+    {name:"Accenture", role:"Associate Engineer", salary:"11 LPA", logo:"https://logo.clearbit.com/accenture.com", link:"https://www.accenture.com/careers"},
+    {name:"Oracle", role:"Java Developer", salary:"28 LPA", logo:"https://logo.clearbit.com/oracle.com", link:"https://www.oracle.com/careers"},
+    {name:"IBM", role:"AI Engineer", salary:"22 LPA", logo:"https://logo.clearbit.com/ibm.com", link:"https://www.ibm.com/careers"}
+  ],
+
+  entc: [
+    {name:"Qualcomm", role:"RF Engineer", salary:"27 LPA", logo:"https://logo.clearbit.com/qualcomm.com", link:"https://qualcomm.com/company/careers"},
+    {name:"Intel", salary:"22 LPA", role:"Chip Design Engineer", logo:"https://logo.clearbit.com/intel.com", link:"https://jobs.intel.com"},
+    {name:"Nvidia", salary:"38 LPA", role:"VLSI Engineer", logo:"https://logo.clearbit.com/nvidia.com", link:"https://nvidia.com/careers"},
+    {name:"Texas Instruments", salary:"25 LPA", role:"Embedded Engineer", logo:"https://logo.clearbit.com/ti.com", link:"https://careers.ti.com"},
+    {name:"Cisco", salary:"20 LPA", role:"Network Engineer", logo:"https://logo.clearbit.com/cisco.com", link:"https://jobs.cisco.com"},
+    {name:"Ericsson", salary:"18 LPA", role:"Telecom Engineer", logo:"https://logo.clearbit.com/ericsson.com", link:"https://www.ericsson.com/en/careers"},
+    {name:"Samsung R&D", salary:"20 LPA", role:"Embedded System Engineer", logo:"https://logo.clearbit.com/samsung.com", link:"https://www.samsung.com/in/about-us/careers"},
+    {name:"Broadcom", salary:"22 LPA", role:"Physical Design Engineer", logo:"https://logo.clearbit.com/broadcom.com", link:"https://www.broadcom.com/company/careers"},
+    {name:"MediaTek", salary:"18 LPA", role:"Chip Architect", logo:"https://logo.clearbit.com/mediatek.com", link:"https://corp.mediatek.com/careers"},
+    {name:"Marvell", salary:"19 LPA", role:"ASIC Engineer", logo:"https://logo.clearbit.com/marvell.com", link:"https://www.marvell.com/company/careers"}
+  ],
+
+  mech: [
+    {name:"Tata Motors", role:"Design Engineer", salary:"12 LPA", logo:"https://logo.clearbit.com/tatamotors.com", link:"https://www.tatamotors.com/careers"},
+    {name:"Mahindra", role:"Quality Analyst", salary:"10 LPA", logo:"https://logo.clearbit.com/mahindra.com", link:"https://www.mahindra.com/careers"},
+    {name:"Bosch", role:"Mechanical Design", salary:"15 LPA", logo:"https://logo.clearbit.com/bosch.com", link:"https://www.bosch-career.com"},
+    {name:"Siemens", role:"Automation Engineer", salary:"18 LPA", logo:"https://logo.clearbit.com/siemens.com", link:"https://www.siemens.com/careers"},
+    {name:"Bajaj Auto", role:"Vehicle Design Engineer", salary:"14 LPA", logo:"https://logo.clearbit.com/bajajauto.com", link:"https://www.bajajauto.com/careers"},
+    {name:"Cummins", role:"Engine Manufacturing Engineer", salary:"12 LPA", logo:"https://logo.clearbit.com/cummins.com", link:"https://cummins.jobs"},
+    {name:"Ashok Leyland", role:"Maintenance Engineer", salary:"11 LPA", logo:"https://logo.clearbit.com/ashokleyland.com", link:"https://www.ashokleyland.com/en/careers"},
+    {name:"JCB", role:"Product Engineer", salary:"14 LPA", logo:"https://logo.clearbit.com/jcb.com", link:"https://www.jcb.com/en-in/careers"},
+    {name:"L&T", role:"Automation Engineer", salary:"20 LPA", logo:"https://logo.clearbit.com/larsentoubro.com", link:"https://www.larsentoubro.com/careers"},
+    {name:"ISRO", role:"Mechanical Scientist", salary:"15 LPA", logo:"https://logo.clearbit.com/isro.gov.in", link:"https://careers.isro.gov.in"}
+  ],
+
+  civil: [
+    {name:"L&T Construction", role:"Site Engineer", salary:"14 LPA", logo:"https://logo.clearbit.com/lntecc.com", link:"https://www.lntecc.com/careers"},
+    {name:"Tata Projects", role:"Project Engineer", salary:"12 LPA", logo:"https://logo.clearbit.com/tataprojects.com", link:"https://www.tataprojects.com/careers"},
+    {name:"Afcons", role:"Bridge Engineer", salary:"13 LPA", logo:"https://logo.clearbit.com/afcons.com", link:"https://www.afcons.com/careers"},
+    {name:"GMR Group", role:"Construction Manager", salary:"15 LPA", logo:"https://logo.clearbit.com/gmrgroup.in", link:"https://www.gmrgroup.in/careers"},
+    {name:"Adani Infra", role:"Structural Analyst", salary:"12 LPA", logo:"https://logo.clearbit.com/adani.com", link:"https://www.adani.com/careers"},
+    {name:"NCC", role:"Planning Engineer", salary:"10 LPA", logo:"https://logo.clearbit.com/ncc.com", link:"https://www.ncclimited.com/careers"},
+    {name:"Shapoorji Pallonji", role:"Architectural Engineer", salary:"15 LPA", logo:"https://logo.clearbit.com/shapoorjipallonji.com", link:"https://www.shapoorjipallonji.com/careers"},
+    {name:"HCC", role:"Site Supervisor", salary:"9 LPA", logo:"https://logo.clearbit.com/hccindia.com", link:"https://www.hccindia.com/careers"},
+    {name:"KEC International", role:"Transmission Engineer", salary:"11 LPA", logo:"https://logo.clearbit.com/kecrpg.com", link:"https://www.kecrpg.com/careers"},
+    {name:"Gammon India", role:"Construction Engineer", salary:"12 LPA", logo:"https://logo.clearbit.com/gammonindia.com", link:"https://www.gammonindia.com/careers"}
+  ],
+};
+
+function renderCompanies(branch) {
+  const container = document.getElementById("companyGrid");
+  container.innerHTML = "";
+  companies[branch].forEach(c => {
+    container.innerHTML += `
+      <div class="company-card">
+        <img src="${c.logo}" alt="${c.name}">
+        <h3>${c.name}</h3>
+        <div class="role">${c.role}</div>
+        <div class="salary">${c.salary}</div>
+        <a href="${c.link}" target="_blank" class="apply-btn">Apply Now</a>
+      </div>
+    `;
+  });
+}
+
+document.querySelectorAll(".branch-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelector(".branch-btn.active").classList.remove("active");
+    btn.classList.add("active");
+    renderCompanies(btn.dataset.branch);
+  });
+});
+
+renderCompanies("cse");
+
+</script>
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient(
+  "https://byrqewqijxzbksbeavzl.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFld3Fpanh6YmtzYmVhdnpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk3OTAsImV4cCI6MjA3ODc4NTc5MH0.tIso8wmZWF1MyZm17imeHrGZXv0smuNaGWYkWycKdsw"
+);
+
+// ===== LOAD PROFILE INFO TO SIDEBAR =====
+async function loadProfile() {
+  const { data:{ user }} = await supabase.auth.getUser();
+  if (!user) return location.href = "auth.html";
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  document.getElementById("profileName").innerText = profile.name;
+  document.getElementById("profileEmail").innerText = user.email;
+  document.getElementById("profileCourse").innerText =
+    `${profile.course} | ${profile.branch}`;
+}
+
+loadProfile();
+
+// ===== LOGOUT BUTTON =====
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  location.href = "auth.html";
+});
+</script>
+
+</body>
+</html>

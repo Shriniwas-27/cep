@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Resources – Vidyālaya Learning Resource Center</title>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; }
+
+    body {
+      background: linear-gradient(to bottom right, #004aad, #00b7ff);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .container { display:flex; width:100%; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px; background:#0f172a; color:white;
+      padding:24px 18px; display:flex; flex-direction:column; align-items:center;
+      box-shadow:4px 0 18px rgba(0,0,0,0.35);
+    }
+    .profile-img { width:100px; height:100px; border-radius:50%; border:3px solid #00d9ff; margin-bottom:10px; }
+    .menu-btn { width:100%; padding:10px; background:#1f2937; border:none; border-radius:8px; margin:5px 0; color:white; cursor:pointer; transition:0.25s; }
+    .menu-btn:hover { background:#38bdf8; color:#0f172a; }
+    .menu-btn.active { background:#38bdf8; color:#0f172a; font-weight:600; }
+
+    /* MAIN CONTENT */
+    .main-content { flex:1; padding:30px 40px; color:white; overflow-y:auto; }
+
+    h1 { font-size:1.9rem; margin-bottom:10px; }
+
+    /* Branch Tabs */
+    .branch-tabs { display:flex; gap:12px; margin:20px 0; }
+    .branch-btn {
+      padding:8px 16px; border:none; border-radius:10px; font-weight:600;
+      background:white; cursor:pointer; transition:0.25s;
+    }
+    .branch-btn.active, .branch-btn:hover {
+      background:#38bdf8; color:#0f172a; transform:translateY(-2px);
+    }
+
+    /* Video Cards */
+    .video-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+    }
+
+    .video-card {
+      background:rgba(255,255,255,0.9); color:#0f172a;
+      border-radius:15px; padding:16px;
+      text-align:center; box-shadow:0 8px 18px rgba(0,0,0,0.25);
+      transition:.25s ease;
+    }
+    .video-card:hover { transform:translateY(-4px) scale(1.03); background:#0f172a; color:white; }
+
+    .video-card img {
+      width:100%; border-radius:12px; margin-bottom:10px;
+    }
+
+    .watch-btn {
+      padding:8px 16px; border-radius:10px; display:inline-block; margin-top:6px;
+      background:#38bdf8; color:#0f172a; font-weight:600; text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+    <h2 id="profileName">Loading...</h2>
+    <p id="profileCourse">Loading...</p>
+    <p id="profileEmail">Loading...</p>
+
+    <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+    <button class="menu-btn" onclick="location.href='notes.html'">📘 Notes</button>
+    <button class="menu-btn" onclick="location.href='courses.html'">📚 Courses</button>
+    <button class="menu-btn" onclick="location.href='placement.html'">🎯 Placement</button>
+    <button class="menu-btn" onclick="location.href='pyq.html'">📄 PYQ</button>
+    <button class="menu-btn active" onclick="location.href='videos.html'">🎥 Video Resources</button>
+    <button class="menu-btn" onclick="location.href='profile.html'">⚙ Profile Settings</button>
+
+    <button id="logoutBtn" class="menu-btn" style="background:#ef4444;">Logout</button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <h1>🎥 Video Resources & Learning Playlists</h1>
+    <p>Handpicked best learning playlists from YouTube for Engineering Students.</p>
+
+    <div class="branch-tabs">
+      <button class="branch-btn active" data-branch="cse">CSE</button>
+      <button class="branch-btn" data-branch="entc">ENTC</button>
+      <button class="branch-btn" data-branch="mech">Mechanical</button>
+      <button class="branch-btn" data-branch="civil">Civil</button>
+    </div>
+
+    <div id="videoGrid" class="video-grid"></div>
+  </main>
+</div>
+
+<script>
+const videoData = {
+
+  cse: [
+    { title:"Full-Stack Web Dev (freeCodeCamp)", thumbnail:"https://img.youtube.com/vi/nu_pCVPKzTk/0.jpg", link:"https://youtu.be/nu_pCVPKzTk" },
+    { title:"DevOps Full Course – Edureka", thumbnail:"https://img.youtube.com/vi/hQcFE0RD0cQ/0.jpg", link:"https://youtu.be/hQcFE0RD0cQ" },
+    { title:"Cloud Computing for Beginners", thumbnail:"https://img.youtube.com/vi/27vJg3v9AqM/0.jpg", link:"https://youtu.be/27vJg3v9AqM" },
+    { title:"Cybersecurity Full Roadmap", thumbnail:"https://img.youtube.com/vi/vK4Mno4QYqk/0.jpg", link:"https://youtu.be/vK4Mno4QYqk" },
+    { title:"AI For All – Andrew Ng", thumbnail:"https://img.youtube.com/vi/D1eL1EnxXXQ/0.jpg", link:"https://youtu.be/D1eL1EnxXXQ" }
+  ],
+
+  entc: [
+    { title:"Signals & Systems – NPTEL", thumbnail:"https://img.youtube.com/vi/0nZYen9w_eo/0.jpg", link:"https://youtu.be/0nZYen9w_eo" },
+    { title:"Embedded Systems Full Course", thumbnail:"https://img.youtube.com/vi/-reZPfkbblM/0.jpg", link:"https://youtu.be/-reZPfkbblM" },
+    { title:"IoT Full Course – Simplilearn", thumbnail:"https://img.youtube.com/vi/1-MCqinc26k/0.jpg", link:"https://youtu.be/1-MCqinc26k" },
+    { title:"VLSI Design Basics", thumbnail:"https://img.youtube.com/vi/0iIkgUaZeLY/0.jpg", link:"https://youtu.be/0iIkgUaZeLY" },
+    { title:"Wireless Communication", thumbnail:"https://img.youtube.com/vi/-ArTzZf_Xmk/0.jpg", link:"https://youtu.be/-ArTzZf_Xmk" }
+  ],
+
+  mech: [
+    { title:"IC Engine Full Course", thumbnail:"https://img.youtube.com/vi/hF1sBXA7Krc/0.jpg", link:"https://youtu.be/hF1sBXA7Krc" },
+    { title:"Strength of Materials – Gate Smashers", thumbnail:"https://img.youtube.com/vi/Uf4BtghMLI8/0.jpg", link:"https://youtu.be/Uf4BtghMLI8" },
+    { title:"Production Engineering", thumbnail:"https://img.youtube.com/vi/1uUFjONDs3s/0.jpg", link:"https://www.youtube.com/live/1uUFjONDs3s" },
+    { title:"Automobile Engineering Basics", thumbnail:"https://img.youtube.com/vi/0UhDnbsTuU8/0.jpg", link:"https://youtu.be/0UhDnbsTuU8" },
+    { title:"Industrial Automation Course", thumbnail:"https://img.youtube.com/vi/0tMiQqf2O2g/0.jpg", link:"https://youtu.be/0tMiQqf2O2g" }
+  ],
+
+  civil: [
+    { title:"AutoCAD Full Course – Civil", thumbnail:"https://img.youtube.com/vi/-OEYa1Hvad0/0.jpg", link:"https://youtu.be/-OEYa1Hvad0" },
+    { title:"Surveying & Levelling Full Course", thumbnail:"https://img.youtube.com/vi/-kZmZp-IEKo/0.jpg", link:"https://www.youtube.com/live/-kZmZp-IEKo" },
+    { title:"Fluid Mechanics Civil", thumbnail:"https://img.youtube.com/vi/HObsjRckLuQ/0.jpg", link:"https://www.youtube.com/live/HObsjRckLuQ" },
+    { title:"Geotechnical Engineering", thumbnail:"https://img.youtube.com/vi/eh3VSqsHicE/0.jpg", link:"https://www.youtube.com/live/eh3VSqsHicE" },
+    { title:"Construction Project Management", thumbnail:"https://img.youtube.com/vi/2PPSQB9diVs/0.jpg", link:"https://youtu.be/2PPSQB9diVs" }
+  ]
+
+};
+
+function renderVideos(branch) {
+  const grid = document.getElementById("videoGrid");
+  grid.innerHTML = "";
+  videoData[branch].forEach(v => {
+    grid.innerHTML += `
+      <div class="video-card">
+        <img src="${v.thumbnail}">
+        <h3>${v.title}</h3>
+        <a href="${v.link}" target="_blank" class="watch-btn">Watch Now</a>
+      </div>`;
+  });
+}
+
+document.querySelectorAll(".branch-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelector(".branch-btn.active").classList.remove("active");
+    btn.classList.add("active");
+    renderVideos(btn.dataset.branch);
+  });
+});
+
+renderVideos("cse");
+</script>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+const supabase = createClient("https://byrqewqijxzbksbeavzl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFld3Fpanh6YmtzYmVhdnpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk3OTAsImV4cCI6MjA3ODc4NTc5MH0.tIso8wmZWF1MyZm17imeHrGZXv0smuNaGWYkWycKdsw");
+
+async function loadUserProfile() {
+  const { data:{ user }} = await supabase.auth.getUser();
+  if(!user) return location.href="auth.html";
+
+  const { data:profile } = await supabase.from("profiles").select("*").eq("id",user.id).single();
+  document.getElementById("profileName").innerText = profile.name;
+  document.getElementById("profileEmail").innerText = user.email;
+  document.getElementById("profileCourse").innerText = `${profile.course} | ${profile.branch}`;
+}
+loadUserProfile();
+
+document.getElementById("logoutBtn").onclick = async()=>{ await supabase.auth.signOut(); location.href="auth.html"; };
+</script>
+
+</body>
+</html>

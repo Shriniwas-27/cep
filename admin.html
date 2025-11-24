@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vidyālaya Learning Resource Center – Admin</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif;}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  gap:20px;
+  background:linear-gradient(to bottom right,#004aad,#00b7ff);
+}
+
+/* BRAND HEADER */
+.brand-header {
+  text-align:center;
+  animation:fadeIn 1s ease-in-out;
+}
+
+.brand-title {
+  font-size:1.8rem;
+  font-weight:800;
+  background:linear-gradient(90deg,#ffffff,#c4e3ff,#ffffff);
+  -webkit-background-clip:text;
+  color:transparent;
+  letter-spacing:1px;
+  text-shadow:0 0 6px rgba(255,255,255,0.35);
+}
+
+.brand-tagline {
+  font-size:.9rem;
+  color:#eef6ff;
+  opacity:.85;
+  margin-top:3px;
+}
+
+@keyframes fadeIn {
+  from{opacity:0;transform:translateY(-10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ADMIN BOX */
+.admin-box{
+  width:380px;
+  padding:32px;
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(12px);
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.30);
+  text-align:center;
+  color:white;
+}
+
+.admin-box h1{
+  font-size:1.9rem;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.admin-box p{
+  font-size:.95rem;
+  opacity:.9;
+  margin-bottom:18px;
+}
+
+.btn{
+  display:block;
+  padding:12px;
+  margin-top:12px;
+  width:100%;
+  background:#38bdf8;
+  color:#0f172a;
+  border:none;
+  font-size:1rem;
+  border-radius:10px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.btn:hover{
+  background:white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BRAND HEADER -->
+<div class="brand-header">
+  <h1 class="brand-title">Vidyālaya Learning Resource Center</h1>
+  <p class="brand-tagline">Admin Access Panel</p>
+</div>
+
+<div class="admin-box">
+  <h1>Welcome Admin 🎉</h1>
+  <p>You are successfully logged in</p>
+
+  <a href="index.html" class="btn">Go to Main Site</a>
+  <button id="logout-btn" class="logout">Logout</button>
+
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient(
+  "https://byrqewqijxzbksbeavzl.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cnFld3Fpanh6YmtzYmVhdnpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk3OTAsImV4cCI6MjA3ODc4NTc5MH0.tIso8wmZWF1MyZm17imeHrGZXv0smuNaGWYkWycKdsw"
+);
+
+async function logout() {
+  const { error } = await supabase.auth.signOut();
+
+  // clear local & session storage
+  localStorage.clear();
+  sessionStorage.clear();
+
+  if (!error) {
+    window.location.href = "auth.html";   // redirect to login page
+  } else {
+    console.log("Logout Error:", error.message);
+  }
+}
+
+// Expose logout function globally
+window.logout = logout;
+</script>
+
+
+
+</script>
+
+</body>
+</html>

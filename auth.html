@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vidyālaya Learning Resource Center – Login / Signup</title>
+
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: "Poppins", system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #004aad, #00b7ff);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* BRAND HEADER */
+    .brand-header {
+      text-align: center;
+      margin-bottom: 18px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .brand-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ffffff, #c4e3ff, #ffffff);
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      text-shadow: 0px 0px 6px rgba(255,255,255,0.4);
+    }
+
+    .brand-tagline {
+      font-size: 0.9rem;
+      color: #eef6ff;
+      opacity: 0.85;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-container {
+      background: #ffffff;
+      width: 90%; max-width: 420px;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.30);
+      text-align: center;
+    }
+
+    .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+    .tab-btn {
+      flex: 1; padding: 10px;
+      border-radius: 50px; border: none;
+      background: #e5e7eb; cursor: pointer; font-weight: 600; transition: 0.25s;
+    }
+
+    .tab-btn.active {
+      background: #3b82f6; color: #ffffff; transform: scale(1.03);
+    }
+
+    .form { display: none; flex-direction: column; gap: 10px; }
+    .form.active { display: flex; }
+
+    .form h2 { margin-bottom: 10px; color: #0f172a; }
+
+    .form input {
+      padding: 10px 12px; border-radius: 8px; border: 1px solid #cbd5e1;
+      font-size: 14px; outline: none; transition: border-color 0.2s;
+    }
+
+    .form input:focus { border-color: #3b82f6; }
+
+    .form button {
+      margin-top: 8px; padding: 11px; border-radius: 8px;
+      border: none; background: #3b82f6; color: #fff; font-weight: 600;
+      cursor: pointer; transition: 0.25s;
+    }
+    .form button:hover { background: #2563eb; transform: translateY(-1px); }
+
+    .back { margin-top: 8px; font-size: 14px; color: #475569; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js" defer></script>
+</head>
+
+<body>
+
+  <!-- BRAND HEADER -->
+  <div class="brand-header">
+    <h1 class="brand-title">Vidyālaya Learning Resource Center  </h1>
+    <p class="brand-tagline">One stop platform for engineering study resources 📘  </p>
+  </div>
+
+  <div class="auth-container">
+
+    <div class="tabs">
+      <button class="tab-btn active" id="loginTab" onclick="showLogin()">Login</button>
+      <button class="tab-btn" id="signupTab" onclick="showSignup()">Signup</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form" class="form active">
+      <h2>Welcome Back 👋</h2>
+      <input type="email" id="login-email" placeholder="Email" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+      <a href="index.html" class="back">← Back to home</a>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signup-form" class="form">
+      <h2>Create Account ✨</h2>
+
+      <input type="text" id="name" placeholder="Full Name" />
+      <input type="text" id="phone" placeholder="Phone Number" />
+      <input type="text" id="division" placeholder="Division" />
+      <input type="text" id="branch" placeholder="Branch" />
+      <input type="text" id="course" placeholder="Course" />
+      <input type="number" id="age" placeholder="Age" />
+
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+
+      <button onclick="signup()">Signup</button>
+      <a href="index.html" class="back">← Back to home</a>
+    </div>
+  </div>
+
+  <script>
+    function showLogin() {
+      document.getElementById("login-form").classList.add("active");
+      document.getElementById("signup-form").classList.remove("active");
+      loginTab.classList.add("active"); signupTab.classList.remove("active");
+    }
+    function showSignup() {
+      document.getElementById("signup-form").classList.add("active");
+      document.getElementById("login-form").classList.remove("active");
+      signupTab.classList.add("active"); loginTab.classList.remove("active");
+    }
+  </script>
+</body>
+</html>

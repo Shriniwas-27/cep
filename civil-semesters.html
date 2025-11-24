@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Civil – Semesters | Vidyālaya</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif;}
+body{background:linear-gradient(to bottom right,#004aad,#00b7ff);min-height:100vh;display:flex;}
+.container{display:flex;width:100%;}
+.sidebar{width:260px;background:#0f172a;color:white;padding:24px 18px;display:flex;flex-direction:column;align-items:center;
+box-shadow:4px 0 18px rgba(0,0,0,0.35);}
+.profile-section{text-align:center;margin-bottom:18px;}
+.profile-img{width:100px;height:100px;border-radius:50%;border:3px solid #00d9ff;margin-bottom:10px;}
+.sidebar-menu{width:100%;margin-top:18px;}
+.menu-btn{width:100%;padding:10px 12px;margin:4px 0;border-radius:8px;border:none;background:#1f2937;color:white;
+text-align:left;font-size:.95rem;cursor:pointer;transition:.25s;}
+.menu-btn:hover{background:#38bdf8;color:#0f172a;transform:translateX(2px);}
+.menu-btn.active{background:#38bdf8;color:#0f172a;font-weight:600;}
+.logout-btn{width:100%;margin-top:auto;padding:10px;border-radius:8px;border:none;background:#ef4444;
+color:white;font-weight:600;cursor:pointer;transition:.25s;}
+.logout-btn:hover{background:#dc2626;transform:scale(1.03);}
+.main-content{flex:1;padding:30px 40px;color:white;overflow-y:auto;}
+.hero{background:rgba(255,255,255,0.15);border-radius:14px;padding:18px 20px;
+backdrop-filter:blur(10px);box-shadow:0 10px 25px rgba(0,0,0,0.25);margin-bottom:24px;}
+.semester-grid{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:12px;margin-bottom:24px;}
+.sem-card{padding:10px 8px;border-radius:10px;border:none;font-weight:600;text-align:center;background:rgba(255,255,255,0.9);
+color:#0f172a;cursor:pointer;transition:.25s;font-size:.95rem;}
+.sem-card:hover,.sem-card.active{background:#38bdf8;color:white;transform:translateY(-3px) scale(1.03);}
+.subjects-wrapper{margin-top:10px;background:rgba(15,23,42,0.65);padding:18px;border-radius:14px;
+box-shadow:0 8px 22px rgba(0,0,0,0.35);}
+.subjects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.subject-card{background:rgba(255,255,255,0.96);color:#0f172a;border-radius:12px;padding:12px;
+box-shadow:0 6px 18px rgba(0,0,0,0.25);transition:.25s;}
+.subject-card:hover{transform:translateY(-3px);}
+.subject-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.subject-btn{flex:1;text-align:center;padding:6px;border-radius:8px;font-size:.8rem;text-decoration:none;border:none;
+cursor:pointer;color:white;background:#3b82f6;transition:.2s;}
+.subject-btn:nth-child(2){background:#10b981;}
+.subject-btn:nth-child(3){background:#f59e0b;}
+.subject-btn:nth-child(4){background:#6366f1;}
+@media(max-width:900px){.semester-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="profile-section">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img"/>
+      <h2 id="profileName">Loading...</h2>
+      <p id="profileCourse">Loading...</p>
+      <p id="profileEmail">Loading...</p>
+    </div>
+
+    <nav class="sidebar-menu">
+      <button class="menu-btn" onclick="location.href='index.html'">📊 Dashboard</button>
+      <button class="menu-btn active" onclick="location.href='notes.html'">📘 Notes</button>
+      <button class="menu-btn" onclick="location.href='courses.html'">📚 Courses</button>
+      <button class="menu-btn" onclick="location.href='placement.html'">🎯 Placement</button>
+      <button class="menu-btn" onclick="location.href='pyq.html'">📄 PYQ</button>
+      <button class="menu-btn" onclick="location.href='videos.html'">🎥 Video Resources</button>
+      <button class="menu-btn" onclick="location.href='profile.html'">⚙ Profile Settings</button>
+    </nav>
+
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="hero">
+      <h1>Civil – Semesters & Subjects</h1>
+      <p>Choose the semester to access Notes, PYQs, MCQs and Google Drive resources.</p>
+    </div>
+
+    <div class="semester-grid" id="semesterGrid">
+      <button class="sem-card active" data-sem="1">Semester 1</button>
+      <button class="sem-card" data-sem="2">Semester 2</button>
+      <button class="sem-card" data-sem="3">Semester 3</button>
+      <button class="sem-card" data-sem="4">Semester 4</button>
+      <button class="sem-card" data-sem="5">Semester 5</button>
+      <button class="sem-card" data-sem="6">Semester 6</button>
+      <button class="sem-card" data-sem="7">Semester 7</button>
+      <button class="sem-card" data-sem="8">Semester 8</button>
+    </div>
+
+    <div class="subjects-wrapper">
+      <div class="subjects-title" id="subjectsTitle">Semester 1 – Subjects</div>
+      <div class="subjects-grid" id="subjectsGrid"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const civilSubjects = {
+  1: [
+    { name: "Engineering Mathematics-I", link:"https://www.studymedia.in/fe/engineering-mathematics-1/" },
+    { name: "Engineering Physics / Chemistry", link:"https://www.studymedia.in/fe/engineering-chemistry/" },
+    { name: "Basic Civil Engineering", link:"https://share.google/fRP9yf6Owin9Xk6pN" },
+    { name: "Engineering Graphics", link:"https://www.studymedia.in/fe/engineering-graphics-2024-pattern/" },
+    { name: "Programming for Problem Solving (C / Python)", link:"https://share.google/Kq1aGHOn0zDJ8VCAn" },
+    { name: "Communication Skills / Environmental Science", link:"https://share.google/vK09IklEgieNs2WhC" }
+  ],
+  2: [
+    { name: "Engineering Mathematics-II", link:"https://www.studymedia.in/fe/engineering-mathematics-2/" },
+    { name: "Engineering Chemistry / Physics-II", link:"https://www.studymedia.in/fe/engineering-physics-notes/" },
+    { name: "Engineering Mechanics", link:"https://www.studymedia.in/fe/engineering-mechanics-2024-pattern/" },
+    { name: "Basic Electrical & Electronics Engineering", link:"https://share.google/xaDm1NDkigyMbTpEE" },
+    { name: "Engineering Geology", link:"https://share.google/hQmdIhVvIRK8FBmSE" },
+    { name: "English for Engineers / EVS", link:"https://share.google/vK09IklEgieNs2WhC" }
+  ],
+  3: [
+    { name: "Surveying & Geomatics", link:"https://share.google/rdvDT685PJ8vbQI9b" },
+    { name: "Strength of Materials", link:"https://share.google/8pjBhKovZen4m0nkY" },
+    { name: "Fluid Mechanics", link:"https://share.google/wlBzHngMOB1ET9ajw" },
+    { name: "Building Construction & Materials", link:"https://share.google/39979D4vkn7BG51wx" },
+    { name: "Engineering Mathematics-III", link:"https://share.google/o5P8mqhoZkQEWUqTX" },
+    { name: "Transportation Engineering-I", link:"https://share.google/o14Ciy7AmctCiBdi0" }
+  ],
+  4: [
+    { name: "Geotechnical Engineering", link:"https://share.google/4y4KXCJdRvcksIIxz" },
+    { name: "Structural Analysis-I", link:"https://share.google/I34BvbgGTHnn8dJxC" },
+    { name: "Hydraulics & Hydraulic Machines", link:"https://share.google/0XPvsUlyMuwoW2LYL" },
+    { name: "Concrete Technology", link:"https://share.google/7izgL8acsTPxSpMVi" },
+    { name: "Open Channel Hydraulics", link:"https://share.google/Nk3f9p66uYItuQppr" },
+    { name: "Environmental Engineering-I", link:"https://share.google/jbLuvgysLgmT1hli7" }
+  ],
+  5: [
+    { name: "Design of RCC Structures", link:"https://share.google/G2VAt65bpnysCxU6w" },
+    { name: "Foundation Engineering", link:"https://share.google/OkXtr2EPy8e4pjAL3" },
+    { name: "Transportation Engineering-II", link:"https://share.google/mwy7dUoGZHNLhh7pl" },
+    { name: "Water Resources Engineering", link:"https://share.google/T6lPjiEQeSS5iePbr" },
+    { name: "Estimating & Costing", link:"https://share.google/hAQpwpuG6mXHAG69o" },
+    { name: "Professional Elective-I", link:"https://share.google/lvb7xN3yKs3M7r2ND" }
+  ],
+  6: [
+    { name: "Steel Structure Design", link:"https://share.google/4HDaj7tDpfoKAi3RX" },
+    { name: "Advanced Structural Analysis", link:"https://share.google/UsWRs5a9e7LH5ASoq" },
+    { name: "Environmental Engineering-II", link:"https://share.google/L5Bf2Gf0wAQAYPZFS" },
+    { name: "Construction Planning & Management", link:"https://share.google/gr5zf7OkGkQgu4umi" },
+    { name: "Open Elective / Professional Elective-II", link:"https://share.google/SWz60zoryzxtnmdbY" },
+    { name: "Mini Project / Seminar", link:"https://share.google/5E09EFAwdUIDGGDYs" }
+  ],
+  7: [
+    { name: "Bridge Engineering", link:"https://share.google/KtHIbxuZTsDTv8c11" },
+    { name: "Advanced Geotechnical Engineering", link:"https://share.google/mlhYNmBTy7YO6PM7F" },
+    { name: "Water and Wastewater Treatment", link:"https://share.google/kZhwYn1uDOTK9tHGG" },
+    { name: "Earthquake Engineering", link:"https://share.google/VS2Hi8WEuVjMsUj93" },
+    { name: "Major Project Phase-I", link:"https://share.google/FUHVkEUGPDhRlUyx6" },
+    { name: "Internship / Seminar", link:"https://share.google/0GFnk0gLxGKWeVzjO" }
+  ],
+  8: [
+    { name: "Construction Safety", link:"https://share.google/2SKRNFpc6pYu98vcJ" },
+    { name: "Smart City / Urban Planning", link:"https://share.google/4Iw9xGucFeR6RBaFe" },
+    { name: "Major Project Phase-II", link:"https://share.google/6rNKC836STb8ZmZYo" },
+    { name: "Viva-Voce / Dissertation", link:"https://share.google/EolYbbgt9JRuyBdln" }
+  ]
+};
+
+function loadSubjects(sem) {
+  document.getElementById("subjectsTitle").innerText = `Semester ${sem} – Subjects`;
+  const grid = document.getElementById("subjectsGrid");
+  grid.innerHTML = "";
+
+  civilSubjects[sem].forEach(sub => {
+    grid.innerHTML += `
+      <div class="subject-card">
+        <h3>${sub.name}</h3>
+        <div class="subject-actions">
+          <a class="subject-btn" href="${sub.link}" target="_blank">📘 Notes</a>
+        </div>
+      </div>`;
+  });
+}
+
+loadSubjects(1);
+
+document.querySelectorAll(".sem-card").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".sem-card").forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
+    loadSubjects(btn.dataset.sem);
+  });
+});
+</script>
+
+
+
+</body>
+</html>

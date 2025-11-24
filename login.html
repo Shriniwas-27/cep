@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login – Vidyālaya</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(to bottom right,#004aad,#00b7ff);
+}
+
+.login-box{
+  width:350px;
+  padding:30px;
+  background:rgba(255,255,255,0.20);
+  border-radius:18px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 10px 25px rgba(0,0,0,.30);
+  text-align:center;
+  color:white;
+}
+
+.login-box h1{
+  font-size:1.8rem;
+  margin-bottom:6px;
+}
+
+.login-box p{
+  font-size:.9rem;
+  opacity:.9;
+  margin-bottom:18px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:6px 0 12px;
+  border:none;
+  border-radius:10px;
+  font-size:.95rem;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#38bdf8;
+  border:none;
+  border-radius:10px;
+  color:#0f172a;
+  font-size:1rem;
+  font-weight:700;
+  margin-top:5px;
+  cursor:pointer;
+}
+button:hover{
+  background:white;
+}
+
+.back-link{
+  display:block;
+  margin-top:10px;
+  color:white;
+  font-size:.85rem;
+  text-decoration:none;
+}
+.back-link:hover{text-decoration:underline}
+
+.error{
+  margin-top:10px;
+  font-size:.85rem;
+  color:#ff4b4b;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h1>Welcome Back 👋</h1>
+  <p>Please login to continue</p>
+
+  <input type="email" id="email" placeholder="Enter Email">
+  <input type="password" id="password" placeholder="Enter Password">
+
+  <button onclick="login()">Login</button>
+  <a href="auth.html" class="back-link">← Create New Account</a>
+  <div id="error" class="error"></div>
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient("YOUR_SUPABASE_URL","YOUR_SUPABASE_ANON_KEY");
+
+async function login(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const errorBox = document.getElementById("error");
+
+  if(!email || !password){
+    errorBox.innerText = "⚠ Please enter email & password";
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if(error){
+    errorBox.innerText = "❌ Incorrect Credentials";
+  } else {
+    errorBox.innerText = "✔ Login Successful! Redirecting...";
+    setTimeout(() => window.location.href="index.html", 900);
+  }
+}
+</script>
+
+</body>
+</html>
